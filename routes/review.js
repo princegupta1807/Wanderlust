@@ -16,14 +16,14 @@ router.post(
   "/",
   isLoggedIn,
   validateReviews,
-  wrapAsync(reviewsController.createReview)
+  wrapAsync(reviewsController.createReview),
 );
 
 router.delete(
   "/:reviewId",
   isLoggedIn,
   isReviewAuthor,
-  wrapAsync(reviewsController.destroyReview)
+  wrapAsync(reviewsController.destroyReview),
 );
 
 module.exports = router;

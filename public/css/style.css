@@ -60,7 +60,9 @@ body {
 .listing-card {
   border: none !important;
   margin-bottom: 2rem;
-  transition: transform 0.1s ease-in-out, ease-in-out;
+  transition:
+    transform 0.1s ease-in-out,
+    ease-in-out;
 }
 
 .listing-card:hover {
@@ -126,7 +128,6 @@ body {
   margin-bottom: 2rem;
   padding-left: 0;
   padding-right: 0;
-
 }
 
 /* Show Page- Reviews Section */

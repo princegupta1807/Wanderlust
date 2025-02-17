@@ -23,7 +23,7 @@ router
       failureRedirect: "/login",
       failureFlash: true,
     }),
-    wrapAsync(usersController.login)
+    wrapAsync(usersController.login),
   );
 
 // User authentication is implemented by passport.authenticate() middleware:
