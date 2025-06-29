@@ -28,7 +28,7 @@ router
     validateListing,
     wrapAsync(listingController.updateListing),
   )
-  .delete(isOwner, isLoggedIn, wrapAsync(listingController.destoryListing));
+  .delete(isOwner, isLoggedIn, wrapAsync(listingController.destroyListing));
 
 // EDIT ROUTE: to edit a particular listing
 router.get(

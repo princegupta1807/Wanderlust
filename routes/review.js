@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const ExpressError = require("../utils/ExpressError.js");
 const {
   validateReviews,
   isLoggedIn,
@@ -16,14 +17,14 @@ router.post(
   "/",
   isLoggedIn,
   validateReviews,
-  wrapAsync(reviewsController.createReview),
+  wrapAsync(reviewsController.createReview)
 );
 
 router.delete(
   "/:reviewId",
   isLoggedIn,
   isReviewAuthor,
-  wrapAsync(reviewsController.destroyReview),
+  wrapAsync(reviewsController.destroyReview)
 );
 
 module.exports = router;

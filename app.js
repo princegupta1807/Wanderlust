@@ -25,14 +25,14 @@ const dbUrl = process.env.ATLASDB_URL;
 
 main()
   .then(() => {
-    console.log("Connected to DB");
+    console.log("Connected to MongoDB");
   })
   .catch((err) => {
-    console.log(err);
+    console.error("Failed to connect to MongoDB", err);
   });
 
 async function main() {
-  await mongoose.connect(dbUrl);
+  mongoose.connect(dbUrl);
 }
 
 app.set("view engine", "ejs");
@@ -63,7 +63,7 @@ const sessionOptions = {
   cookie: {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true, // prevents cross-scripting attacks
+    httpOnly: true, // prevents cross-scripting(XSS) attacks
   }, // storing cookies for 7 days
 };
 
@@ -72,17 +72,30 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Flash messages middleware
 app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
+  // Only clear flash messages if this is not an AJAX request
+  if (!req.xhr) {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+  } else {
+    res.locals.success = [];
+    res.locals.error = [];
+  }
 
+  // Make currentUser available in all templates
   res.locals.currentUser = req.user;
-
   next();
+});
+
+// Root route that redirects to /listings
+app.get("/", (req, res) => {
+  res.redirect("/listings");
 });
 
 // Replacing "/listings"(common in all routes in listing.js) with listings for clean code
@@ -90,7 +103,7 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
-// ERROR HANDLING: This will handle errors when we send req to any route other than above routes we've created above
+// ERROR HANDLING: This will handle errors when we send req to any route other than above routes we've created
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "PAGE NOT FOUND"));
 });

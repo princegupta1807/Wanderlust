@@ -23,11 +23,12 @@ router
       failureRedirect: "/login",
       failureFlash: true,
     }),
-    wrapAsync(usersController.login),
+    wrapAsync(usersController.login)
   );
 
 // User authentication is implemented by passport.authenticate() middleware:
 
+// Logout Route:
 router.get("/logout", usersController.logout);
 
 module.exports = router;

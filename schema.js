@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const review = require("./models/review");
 
 // creating schema for validating listings:-
 module.exports.listingSchema = Joi.object({
